@@ -4,7 +4,7 @@ _base_ = [
 ]
 
 angle_version = 'le90'
-gpu_number = 8
+gpu_number = 1
 # fp16 = dict(loss_scale='dynamic')
 model = dict(
     type='StripRCNN',
@@ -16,8 +16,8 @@ model = dict(
         drop_rate=0.1,
         drop_path_rate=0.15,
         depths=[2,2,4,2],
-        init_cfg=dict(type='Pretrained', checkpoint="pretrained/stripnet_s.pth.tar"),
-        norm_cfg=dict(type='SyncBN', requires_grad=True)),
+        init_cfg=dict(type='Pretrained', checkpoint="pretrained/stripnet_s.pth"),
+        norm_cfg=dict(type='BN', requires_grad=True)),
     neck=dict(
         type='FPN',
         in_channels=[64, 128, 320, 512],
@@ -58,7 +58,7 @@ model = dict(
             in_channels=256,
             fc_out_channels=1024,
             roi_feat_size=7,
-            num_classes=15,
+            num_classes=1,
             bbox_coder=dict(
                 type='DeltaXYWHAOBBoxCoder',
                 angle_range=angle_version,
@@ -123,7 +123,7 @@ model = dict(
             nms_pre=2000,
             min_bbox_size=0,
             score_thr=0.05,
-            nms=dict(iou_thr=0.1),
+            nms=dict(iou_thr=0.3),
             max_per_img=2000)))
 
 img_norm_cfg = dict(
